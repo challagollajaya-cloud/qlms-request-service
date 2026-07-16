@@ -1,4 +1,4 @@
-name: Deploy Request Service
+name: Deploy Inventory Service
 
 on:
   push:
@@ -31,5 +31,15 @@ jobs:
 
       - name: Build and Push Image
         run: |
-          docker build -t qlmsregistry.azurecr.io/qlms-request:latest .
-          docker push qlmsregistry.azurecr.io/qlms-request:latest
+          docker build -t qlmsregistry.azurecr.io/qlms-inventory:latest .
+          docker push qlmsregistry.azurecr.io/qlms-inventory:latest
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to AKS
+        run: |
+          az aks get-credentials --resource-group flowershop-rg --name qlms-aks --overwrite-existing
+          kubectl rollout restart deployment qlms-inventory -n qlms
