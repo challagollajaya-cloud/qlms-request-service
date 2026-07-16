@@ -36,6 +36,6 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          az login --service-principal -u 1f71efe2-7ad9-4f22-869f-85106e937c8a -p iQv8Q~YF4dRw-XGpiOfOG_ysPeZjFzLk1jm8Rdfy --tenant 4941e163-891f-4752-af66-5dc5338b9f91
+          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
           az aks get-credentials --resource-group flowershop-rg --name qlms-aks --overwrite-existing
           kubectl rollout restart deployment qlms-request -n qlms
