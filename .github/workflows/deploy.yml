@@ -34,8 +34,3 @@ jobs:
           docker build -t qlmsregistry.azurecr.io/qlms-request:latest .
           docker push qlmsregistry.azurecr.io/qlms-request:latest
 
-      - name: Deploy to AKS
-        run: |
-          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az aks get-credentials --resource-group flowershop-rg --name qlms-aks --overwrite-existing
-          kubectl rollout restart deployment qlms-request -n qlms
